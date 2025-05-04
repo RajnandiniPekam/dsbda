@@ -1,0 +1,91 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+df = pd.read_csv("AcademicPerformanceNEW.csv")
+
+
+df.head()
+
+
+df.tail()
+
+
+df.isnull()
+
+
+df.isnull().sum()
+
+
+for col in df.select_dtypes(include=np.number).columns:
+    df[col].fillna(df[col].mean(), inplace=True)
+
+
+df.isnull()
+
+
+for col in df.select_dtypes(include='object').columns:
+    df[col].fillna(df[col].mode()[0],inplace=True)
+
+
+df.isnull()
+
+
+df.isnull().sum()
+
+
+numeric_cols = df.select_dtypes(include=np.number).columns
+for col in numeric_cols:
+    plt.figure(figsize=(6, 2))
+    sns.boxplot(data=df, x=col)
+    plt.title(f"Boxplot for {col}")
+    plt.show()
+
+
+
+def remove_outliers(df, columns):
+    Q1 = df[columns].quantile(0.25)
+    Q3 = df[columns].quantile(0.75)
+    IQR = Q3 - Q1
+    lower = Q1 - 1.5*IQR
+    upper = Q3 + 1.5*IQR
+    return df[(df[columns]>= lower) & (df[columns]<=upper)]
+
+for col in numeric_cols:
+    df = remove_outliers(df, col)
+
+
+
+for col in numeric_cols:
+    plt.figure(figsize=(6, 2))
+    sns.boxplot(data=df, x=col)
+    plt.title(f"Boxplot for {col}")
+    plt.show()
+
+
+
+df['math score'].skew()
+
+
+
+df['math score_log'] = np.log1p(df['math score'])
+
+
+
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+sns.histplot(df['math score'], kde=True)
+plt.title("Original Distribution")
+
+plt.subplot(1, 2, 2)
+sns.histplot(df['math score_log'], kde=True)
+plt.title("Log-Transformed Distribution")
+
+plt.show()
+
+
+
+
+

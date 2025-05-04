@@ -1,0 +1,51 @@
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk import pos_tag
+from sklearn.feature_extraction.text import TfidfVectorizer
+import string
+
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('averaged_perceptron_tagger')
+
+
+
+sample_doc = "This is a practical of dsbda"
+
+
+tokens = word_tokenize(sample_doc)
+print("Tokens:",tokens)
+
+
+pos_tags = pos_tag(tokens)
+print("POS Tags:",pos_tags)
+
+
+
+stop_words = set(stopwords.words('english'))
+filtered_tokens = [word for word in tokens if word.lower() not in stop_words and word not in string.punctuation]
+print("After Stop Word Removal:",filtered_tokens)
+
+
+stemmer = PorterStemmer()
+stemmed = [stemmer.stem(word) for word in filtered_tokens]
+print("Stemmed Words : ",stemmed)
+
+
+lemmatizer = WordNetLemmatizer()
+lemmatized = [lemmatizer.lemmatize(word) for word in filtered_tokens]
+print("Lemmatized Words:",lemmatized)
+
+
+import pandas as pd
+documents = ["This the practical of dsbda"]
+
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform(documents)
+
+df_tfidf = pd.DataFrame(tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
+print("TF-IDF Representation:\n",df_tfidf)

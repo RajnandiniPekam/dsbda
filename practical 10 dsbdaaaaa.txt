@@ -1,0 +1,69 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+
+
+# Load the dataset
+df = pd.read_csv("C:/Users/aasth/OneDrive/Desktop/DSBDA/Iris.csv")
+
+
+
+# 1. Display basic information about the dataset
+print("First 5 records:\n", df.head())
+print("\nDataset Info:")
+print(df.info())
+
+print("\nSummary Statistics:")
+print(df.describe())
+
+
+
+# 2. Identify feature types
+print("\nFeature types:")
+for col in df.columns:
+    dtype = df[col].dtype
+    if dtype == 'object':
+        print(f"{col}: Nominal")
+    else:
+        print(f"{col}: Numeric")
+
+
+
+# 3. Histograms for each numeric feature
+df.hist(figsize=(10, 8), bins=20, color='skyblue', edgecolor='black')
+plt.suptitle("Histograms of Iris Dataset Features")
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+
+# 4. Box plots for each numeric feature
+numeric_features = df.select_dtypes(include=['float64', 'int64']).columns
+for feature in numeric_features:
+    plt.figure(figsize=(6, 4))
+    sns.boxplot(x=df[feature], color='lightcoral')
+    plt.title(f"Boxplot of {feature}")
+    plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

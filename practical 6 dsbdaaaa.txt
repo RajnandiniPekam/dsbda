@@ -1,0 +1,62 @@
+import pandas as pd
+from sklearn.metrics import confusion_matrix,precision_score,recall_score,accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+
+
+
+df = pd.read_csv("Iris.csv")
+df.head()
+
+
+df.drop('Id',axis = 1,inplace=True)
+
+
+
+x = df.drop('Species',axis=1)
+y = df['Species']
+
+
+
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=0)
+
+
+
+model = GaussianNB()
+model.fit(x_train,y_train)
+
+
+
+y_pred = model.predict(x_test)
+
+
+
+cm = confusion_matrix(y_test,y_pred)
+TP = [1,1]
+TN = [0,0]
+FP = [0,1]
+FN = [1,0]
+
+print("Confusion matrix :\n ",cm)
+print(f"True Positive : {TP}")
+print(f"True Negative : {TN}")
+print(f"False Positive : {FP}")
+print(f"False Negative : {FN}")
+
+accuracy = accuracy_score(y_test,y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test,y_pred,average='macro')
+recall = recall_score(y_test,y_pred,average='macro')
+
+print("\nAccuracy Score  : ",accuracy)
+print(f"Error rate  : ",error_rate)
+print(f"Precision Score  : ",precision)
+print(f"Recall Score  : ",recall)
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.heatmap(cm,annot=True,fmt='d',cmap='Blues')
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion matrix")
+plt.show()

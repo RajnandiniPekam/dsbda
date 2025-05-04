@@ -1,0 +1,36 @@
+# Step 1: Import required libraries
+import pandas as pd       # For loading and handling data
+import seaborn as sns     # For data visualization
+import matplotlib.pyplot as plt  # For displaying plots
+
+
+# Step 2: Load the Titanic dataset
+df = pd.read_csv("C:/Users/aasth/OneDrive/Desktop/DSBDA/Titanic1.csv")  # Make sure the file is in your working directory
+
+
+
+# Step 3: Display the first 5 rows of the dataset
+print("🔹 First 5 records of Titanic dataset:")
+print(df.head())
+
+
+# Step 4: Check for missing values in 'fare' column
+print("\n🔹 Missing values in 'fare' column:")
+print(df['fare'].isnull().sum())
+
+
+
+
+print("\n🔹 Fare Summary Statistics:")
+print(df['fare'].describe())
+
+
+
+# Step 5: Plot a histogram for the 'fare' column
+plt.figure(figsize=(10, 6))  # Optional: Adjust the figure size
+sns.histplot(df['fare'], kde=True, bins=30, color='skyblue')  # KDE adds smooth curve
+plt.title('Distribution of Fare Prices on Titanic')
+plt.xlabel('Fare')
+plt.ylabel('Number of Passengers')
+plt.grid(True)
+plt.show()

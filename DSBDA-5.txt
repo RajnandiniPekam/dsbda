@@ -1,0 +1,61 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+
+df = pd.read_csv("C:/Users/aasth/OneDrive/Desktop/DSBDA/Social_Network_Ads.csv")
+df.head()
+
+
+
+
+
+X = df[['Age', 'EstimatedSalary']]  # Features
+y = df['Purchased']                # Target
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)
+
+
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+
+
+
+
+y_pred = model.predict(X_test)
+
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:\n", cm)
+TN, FP, FN, TP = cm.ravel()
+accuracy = (TP + TN) / (TP + TN + FP + FN)
+error_rate = 1 - accuracy
+precision = TP / (TP + FP)
+recall = TP / (TP + FN)
+print(f"\nAccuracy: {accuracy:.2f}")
+print(f"Error Rate: {error_rate:.2f}")
+print(f"Precision: {precision:.2f}")
+print(f"Recall: {recall:.2f}")
+
+
+
+
+
+
+print("\nClassification Report:\n")
+print(classification_report(y_test, y_pred))
+
+
+
+
+
+
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.show()

@@ -1,0 +1,44 @@
+import pandas as pd
+import numpy as np
+
+
+
+df = pd.read_csv("Employee_Salary_Dataset.csv")
+df.head()
+
+
+
+grouped = df.groupby('Gender')['Salary']
+summery_stats= grouped.agg(['mean','median','min','max','std'])
+print("\nSummery statistics of Salary grouped by Gender :")
+print(summery_stats)
+
+
+
+
+grouped1 = df.groupby('Experience_Years')['Salary']
+salary_list_by_exp = grouped1.apply(list)
+print("Salary list grouped by Experience years : ")
+print(salary_list_by_exp)
+
+
+
+iris = pd.read_csv("Iris.csv")
+
+
+
+iris.columns
+
+
+
+print("Species in dataset : ",iris['Species'].unique())
+
+
+
+group_iris = iris.groupby('Species')
+for species, data in group_iris:
+    print(f"\nDescriptive statistics of {species}")
+    print(data.describe())
+
+
+
